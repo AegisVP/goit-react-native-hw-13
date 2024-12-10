@@ -1,36 +1,33 @@
 import React from 'react';
 import { Image, Pressable, ScrollView, Text, View } from 'react-native';
 import { style as genStyles } from '../../styles/general';
-import { styles as postMetaStyles } from '../components/Post';
+import { styles as postMetaStyles } from '../components/PostCard';
 import { LogoutButton } from '../components/LogoutButton';
 import { colors } from '../../styles/colors';
 import { Ionicons } from '@expo/vector-icons';
-import { Post } from '../components/Post';
-import { PostList } from '../components/PostList';
+import { PostCard } from '../components/PostCard';
 
-const ProfileScreen = ({ user, posts, comments }) => {
+const ProfileScreen = ({ user, posts, comments, doLogout }) => {
   const handleChangeAvatar = () => {
     console.log('Change avatar logic');
   };
 
   const handleLogout = () => {
-    // TODO: Add logout logic, needs an authentication hook
-    console.log('TODO: Logout logic');
+    doLogout();
   };
 
-  const MetaLine = ({ item: { comments, likes = [], location } }) => (
+  const MetaLine = ({ item: { comments, likes = [], locality } }) => (
     <View style={postMetaStyles.postMeta}>
       <View style={{ gap: 24, flexDirection: 'row' }}>
         <Text style={[postMetaStyles.postDescription, { color: comments.length > 0 ? colors.default : colors.text.secondary }]}>
-          <Ionicons name='chatbubbles' color={colors.accent} size={16} /> <Text style={postMetaStyles.postDescription}>{comments.length}</Text>
+          <Ionicons name='chatbubbles' color={colors.accent} size={16} /> <Text>{comments.length}</Text>
         </Text>
         <Text style={[postMetaStyles.postDescription, { color: likes.length > 0 ? colors.default : colors.text.secondary }]}>
-          <Ionicons name='thumbs-up-outline' color={colors.accent} size={16} /> <Text style={postMetaStyles.postDescription}>{likes.length}</Text>
+          <Ionicons name='thumbs-up-outline' color={colors.accent} size={16} /> <Text>{likes.length}</Text>
         </Text>
       </View>
       <Text style={[postMetaStyles.postDescription, { color: colors.text.secondary }]}>
-        <Ionicons name='location-outline' size={16} />{' '}
-        <Text style={[postMetaStyles.postDescription, { color: colors.text.default, textDecorationLine: 'underline' }]}>{location.country}</Text>
+        <Ionicons name='location-outline' size={16} /> <Text style={{ color: colors.text.default, textDecorationLine: 'underline' }}>{locality}</Text>
       </Text>
     </View>
   );
@@ -49,7 +46,6 @@ const ProfileScreen = ({ user, posts, comments }) => {
             backgroundColor: 'white',
             justifyContent: 'start',
             paddingTop: 60 + 32,
-            paddingHorizontal: 16,
             gap: 32,
             borderTopLeftRadius: 25,
             borderTopRightRadius: 25,
@@ -61,11 +57,10 @@ const ProfileScreen = ({ user, posts, comments }) => {
             <Ionicons name='add-circle-outline' size={24} color={colors.text.secondary} style={{ transform: [{ rotate: '45deg' }] }} />
           </Pressable>
           <Text style={{ fontWeight: 500, fontSize: 30 }}>{user.name}</Text>
-          <View style={{ flex: 1, width: '100%', gap: 32, margin: 0, paddingHorizontal: 32 }}>
-            {posts.map(post => {
-              const item = { ...post, locationString: post.location.country, comments: comments.filter(comment => comment.post_id === post.id) };
-              return <Post key={post.id} post={item} metaLine={() => <MetaLine item={item} />} />;
-            })}
+          <View style={{ flex: 1, width: '100%', gap: 32, margin: 0, paddingHorizontal: 16 }}>
+            {posts.map(item => (
+              <PostCard key={item.id} post={item} metaLine={() => <MetaLine item={item} />} />
+            ))}
           </View>
         </View>
       </ScrollView>

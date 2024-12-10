@@ -14,7 +14,11 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.pysarenko.myproject",
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "AIzaSyA7TNsbatCuwRLSaNheQVn4uxG9P6ayFG0"
+      }
     },
     "android": {
       "adaptiveIcon": {

@@ -3,7 +3,7 @@ import { StyleSheet, TextInput, View } from 'react-native';
 import { colors } from '../../styles/colors';
 
 export const Input = props => {
-  const { value, onChangeText, placeholder, outerStyles, rightButton, autofocus = false, secureTextEntry = false, onBlur: onBlurCustom } = props;
+  const { passRef, value, onChangeText, placeholder, outerStyles, rightButton, autofocus = false, secureTextEntry = false, onBlur: onBlurCustom } = props;
   const [isFocused, setIsFocused] = useState(false);
 
   const onFocus = () => setIsFocused(true);
@@ -20,6 +20,7 @@ export const Input = props => {
     <View style={[style.input, isFocused && style.focused, outerStyles]}>
       <TextInput
         {...props}
+        ref={passRef}
         value={value}
         onChangeText={onChangeText}
         autoFocus={autofocus}
